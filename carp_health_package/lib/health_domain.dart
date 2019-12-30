@@ -1,0 +1,53 @@
+part of health_lib;
+
+/// Specify the configuration on how to collect location data.
+@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
+class HealthMeasure extends Measure {
+  List<HealthDataType> healthDataTypes;
+  Duration interval = Duration(days: 1); // 24 hours
+  DateTime startTime = DateTime.now();
+
+  HealthMeasure(MeasureType type,
+      {List<HealthDataType> healthDataTypes,
+      Duration interval,
+      DateTime startTime})
+      : super(type);
+
+  static Function get fromJsonFunction => _$HealthMeasureFromJson;
+
+  factory HealthMeasure.fromJson(Map<String, dynamic> json) =>
+      FromJsonFactory.fromJson(
+          json[Serializable.CLASS_IDENTIFIER].toString(), json);
+
+  Map<String, dynamic> toJson() => _$HealthMeasureToJson(this);
+}
+
+/// A [Datum] that holds a [HealthDataPoint] datapoint information collected through the [World's Air Quality Index (WAQI)](https://waqi.info) API.
+@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
+class HealthDatum extends CARPDatum {
+  static const DataFormat CARP_DATA_FORMAT =
+      DataFormat(NameSpace.CARP, HealthSamplingPackage.HEALTH);
+
+  DataFormat get format => CARP_DATA_FORMAT;
+
+  num value;
+  String unit;
+  int dateFrom;
+  int dateTo;
+  String dataType;
+  String platform;
+
+  HealthDatum({HealthDataPoint healthDataPoint}) {
+    value = healthDataPoint.value;
+    unit = healthDataPoint.unit;
+    dateFrom = healthDataPoint.dateFrom;
+    dateTo = healthDataPoint.dateTo;
+    dataType = healthDataPoint.dataType;
+    platform = healthDataPoint.platform;
+  }
+
+  factory HealthDatum.fromJson(Map<String, dynamic> json) =>
+      _$HealthDatumFromJson(json);
+
+  Map<String, dynamic> toJson() => _$HealthDatumToJson(this);
+}
