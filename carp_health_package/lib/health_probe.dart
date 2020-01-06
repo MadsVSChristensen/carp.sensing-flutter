@@ -1,8 +1,7 @@
 part of health_lib;
 
 class HealthProbe extends StreamProbe {
-  StreamController<HealthDatum> streamController =
-      StreamController<HealthDatum>.broadcast();
+  StreamController<HealthDatum> streamController = StreamController<HealthDatum>.broadcast();
   List<HealthDataType> dataTypes;
 
   Stream<HealthDatum> get stream => streamController.stream;
@@ -14,8 +13,7 @@ class HealthProbe extends StreamProbe {
       /// Calls to 'Health.getHealthDataFromType'
       /// must be wrapped in a try catch block.
       try {
-        List<HealthDataPoint> healthData =
-            await Health.getHealthDataFromType(start, end, type);
+        List<HealthDataPoint> healthData = await Health.getHealthDataFromType(start, end, type);
         healthData.addAll(healthData);
       } catch (exception) {
         print(exception.toString());
@@ -23,8 +21,7 @@ class HealthProbe extends StreamProbe {
 
       /// Convert [HealthDataPoint] to Datums and add them to the stream.
       for (HealthDataPoint h in healthData) {
-        streamController.add(HealthDatum(
-            h.value, h.unit, h.dateTo, h.dateFrom, h.dataType, h.platform));
+        streamController.add(HealthDatum.fromHealthDataPoint(h));
       }
     }
 
