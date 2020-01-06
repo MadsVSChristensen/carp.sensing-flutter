@@ -35,14 +35,9 @@ class HealthDatum extends CARPDatum {
   String dataType;
   String platform;
 
-  HealthDatum({HealthDataPoint healthDataPoint}) {
-    value = healthDataPoint.value;
-    unit = healthDataPoint.unit;
-    dateFrom = healthDataPoint.dateFrom;
-    dateTo = healthDataPoint.dateTo;
-    dataType = healthDataPoint.dataType;
-    platform = healthDataPoint.platform;
-  }
+  HealthDatum(this.value, this.unit, this.dateFrom, this.dateTo, this.dataType,
+      this.platform)
+      : super();
 
   factory HealthDatum.fromJson(Map<String, dynamic> json) =>
       _$HealthDatumFromJson(json);

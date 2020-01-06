@@ -109,17 +109,18 @@ const _$HealthDataTypeEnumMap = {
 };
 
 HealthDatum _$HealthDatumFromJson(Map<String, dynamic> json) {
-  return HealthDatum()
+  return HealthDatum(
+    json['value'] as num,
+    json['unit'] as String,
+    json['date_from'] as int,
+    json['date_to'] as int,
+    json['data_type'] as String,
+    json['platform'] as String,
+  )
     ..id = json['id'] as String
     ..timestamp = json['timestamp'] == null
         ? null
-        : DateTime.parse(json['timestamp'] as String)
-    ..value = json['value'] as num
-    ..unit = json['unit'] as String
-    ..dateFrom = json['date_from'] as int
-    ..dateTo = json['date_to'] as int
-    ..dataType = json['data_type'] as String
-    ..platform = json['platform'] as String;
+        : DateTime.parse(json['timestamp'] as String);
 }
 
 Map<String, dynamic> _$HealthDatumToJson(HealthDatum instance) {

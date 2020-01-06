@@ -4,6 +4,7 @@ class HealthProbe extends StreamProbe {
   StreamController<HealthDatum> streamController =
       StreamController<HealthDatum>.broadcast();
   List<HealthDataType> dataTypes;
+
   Stream<HealthDatum> get stream => streamController.stream;
   List<HealthDataPoint> healthData = List<HealthDataPoint>();
 
@@ -22,7 +23,8 @@ class HealthProbe extends StreamProbe {
 
       /// Convert [HealthDataPoint] to Datums and add them to the stream.
       for (HealthDataPoint h in healthData) {
-        streamController.add(HealthDatum(healthDataPoint: h));
+        streamController.add(HealthDatum(
+            h.value, h.unit, h.dateTo, h.dateFrom, h.dataType, h.platform));
       }
     }
 
@@ -42,6 +44,5 @@ class HealthProbe extends StreamProbe {
         end = start.add(m.interval);
       });
     }
-
   }
 }
