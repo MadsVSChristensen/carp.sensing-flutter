@@ -7,15 +7,12 @@ class HealthMeasure extends Measure {
   Duration interval;
   DateTime startTime;
 
-  HealthMeasure(
-      MeasureType type, this.healthDataTypes, this.interval, this.startTime)
-      : super(type);
+  HealthMeasure(MeasureType type, this.healthDataTypes, this.interval, this.startTime) : super(type);
 
   static Function get fromJsonFunction => _$HealthMeasureFromJson;
 
   factory HealthMeasure.fromJson(Map<String, dynamic> json) =>
-      FromJsonFactory.fromJson(
-          json[Serializable.CLASS_IDENTIFIER].toString(), json);
+      FromJsonFactory.fromJson(json[Serializable.CLASS_IDENTIFIER].toString(), json);
 
   Map<String, dynamic> toJson() => _$HealthMeasureToJson(this);
 }
@@ -23,8 +20,7 @@ class HealthMeasure extends Measure {
 /// A [Datum] that holds a [HealthDataPoint] datapoint information collected through the [World's Air Quality Index (WAQI)](https://waqi.info) API.
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class HealthDatum extends CARPDatum {
-  static const DataFormat CARP_DATA_FORMAT =
-      DataFormat(NameSpace.CARP, HealthSamplingPackage.HEALTH);
+  static const DataFormat CARP_DATA_FORMAT = DataFormat(NameSpace.CARP, HealthSamplingPackage.HEALTH);
 
   DataFormat get format => CARP_DATA_FORMAT;
 
@@ -35,12 +31,17 @@ class HealthDatum extends CARPDatum {
   String dataType;
   String platform;
 
-  HealthDatum(this.value, this.unit, this.dateFrom, this.dateTo, this.dataType,
-      this.platform)
-      : super();
+  HealthDatum(this.value, this.unit, this.dateFrom, this.dateTo, this.dataType, this.platform) : super();
 
-  factory HealthDatum.fromJson(Map<String, dynamic> json) =>
-      _$HealthDatumFromJson(json);
+  factory HealthDatum.fromHealthDataPoint(HealthDataPoint healthDataPoint) => HealthDatum(
+      healthDataPoint.value,
+      healthDataPoint.unit,
+      healthDataPoint.dateFrom,
+      healthDataPoint.dateTo,
+      healthDataPoint.dataType,
+      healthDataPoint.platform);
+
+  factory HealthDatum.fromJson(Map<String, dynamic> json) => _$HealthDatumFromJson(json);
 
   Map<String, dynamic> toJson() => _$HealthDatumToJson(this);
 }
