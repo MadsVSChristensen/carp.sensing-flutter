@@ -9,22 +9,20 @@ class HealthProbe extends StreamProbe {
 
   Duration duration;
 
+  /// Make API call and fetch data points
   Future<void> _makeApiCall(DateTime start, DateTime end) async {
-    /// Make API call and fetch data points
     for (HealthDataType type in dataTypes) {
-      /// Calls to 'Health.getHealthDataFromType'
-      /// must be wrapped in a try catch block.
+      // calls to 'Health.getHealthDataFromType' must be wrapped in a try catch block.
       try {
         List<HealthDataPoint> healthData = await Health.getHealthDataFromType(start, end, type);
         healthData.addAll(healthData);
       } catch (exception) {
         print(exception.toString());
+        streamController.addError(exception);
       }
 
-      /// Convert [HealthDataPoint] to Datums and add them to the stream.
-      for (HealthDataPoint h in healthData) {
-        streamController.add(HealthDatum.fromHealthDataPoint(h));
-      }
+      // convert [HealthDataPoint] to Datums and add them to the stream.
+      for (HealthDataPoint h in healthData) streamController.add(HealthDatum.fromHealthDataPoint(h));
     }
 
     Future<void> onResume() async {
@@ -36,6 +34,7 @@ class HealthProbe extends StreamProbe {
       assert(measure is HealthMeasure);
       super.onInitialize(measure);
       duration = (measure as HealthMeasure).duration;
+      dataTypes = (measure as HealthMeasure).healthDataTypes;
     }
   }
 }
