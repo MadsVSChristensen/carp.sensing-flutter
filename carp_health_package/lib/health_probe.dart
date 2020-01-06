@@ -29,7 +29,7 @@ class HealthProbe extends StreamProbe {
 
     Future<void> onResume() async {
       super.onResume();
-      _makeApiCall(DateTime.now(), DateTime.now().add(duration));
+      _makeApiCall(DateTime.now().subtract(duration), DateTime.now());
     }
 
     Future<void> onInitialize(Measure measure) async {
