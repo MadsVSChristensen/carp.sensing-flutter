@@ -2,11 +2,10 @@ part of health_lib;
 
 class HealthProbe extends StreamProbe {
   StreamController<HealthDatum> streamController = StreamController<HealthDatum>.broadcast();
-  List<HealthDataType> dataTypes;
-
   Stream<HealthDatum> get stream => streamController.stream;
   List<HealthDataPoint> healthData = List<HealthDataPoint>();
 
+  List<HealthDataType> dataTypes;
   Duration duration;
 
   /// Make API call and fetch data points
