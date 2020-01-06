@@ -4,13 +4,11 @@ part of health_lib;
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class HealthMeasure extends Measure {
   List<HealthDataType> healthDataTypes;
-  Duration interval = Duration(days: 1); // 24 hours
-  DateTime startTime = DateTime.now();
+  Duration interval;
+  DateTime startTime;
 
-  HealthMeasure(MeasureType type,
-      {List<HealthDataType> healthDataTypes,
-      Duration interval,
-      DateTime startTime})
+  HealthMeasure(
+      MeasureType type, this.healthDataTypes, this.interval, this.startTime)
       : super(type);
 
   static Function get fromJsonFunction => _$HealthMeasureFromJson;

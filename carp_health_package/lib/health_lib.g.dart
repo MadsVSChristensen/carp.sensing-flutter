@@ -11,13 +11,13 @@ HealthMeasure _$HealthMeasureFromJson(Map<String, dynamic> json) {
     json['type'] == null
         ? null
         : MeasureType.fromJson(json['type'] as Map<String, dynamic>),
-    healthDataTypes: (json['health_data_types'] as List)
+    (json['health_data_types'] as List)
         ?.map((e) => _$enumDecodeNullable(_$HealthDataTypeEnumMap, e))
         ?.toList(),
-    interval: json['interval'] == null
+    json['interval'] == null
         ? null
         : Duration(microseconds: json['interval'] as int),
-    startTime: json['start_time'] == null
+    json['start_time'] == null
         ? null
         : DateTime.parse(json['start_time'] as String),
   )
