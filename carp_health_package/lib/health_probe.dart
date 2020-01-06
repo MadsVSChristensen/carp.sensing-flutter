@@ -8,7 +8,7 @@ class HealthProbe extends StreamProbe {
   List<HealthDataType> dataTypes;
   Duration duration;
 
-  /// Make API call and fetch data points
+  /// Make Health plugin call and fetch data points
   Future<void> _makeApiCall(DateTime start, DateTime end) async {
     for (HealthDataType type in dataTypes) {
       // calls to 'Health.getHealthDataFromType' must be wrapped in a try catch block.
