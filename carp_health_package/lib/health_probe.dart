@@ -7,6 +7,8 @@ class HealthProbe extends StreamProbe {
   Stream<HealthDatum> get stream => streamController.stream;
   List<HealthDataPoint> healthData = List<HealthDataPoint>();
 
+  Duration duration;
+
   Future<void> _makeApiCall(DateTime start, DateTime end) async {
     /// Make API call and fetch data points
     for (HealthDataType type in dataTypes) {
@@ -25,21 +27,15 @@ class HealthProbe extends StreamProbe {
       }
     }
 
+    Future<void> onResume() async {
+      super.onResume();
+      _makeApiCall(DateTime.now(), DateTime.now().add(duration));
+    }
+
     Future<void> onInitialize(Measure measure) async {
       assert(measure is HealthMeasure);
       super.onInitialize(measure);
-
-      /// Extract interval and start time
-      HealthMeasure m = measure as HealthMeasure;
-      DateTime start = m.startTime;
-      DateTime end = start.add(m.interval);
-
-      /// Start periodic API queries
-      new Timer.periodic(m.interval, (Timer t) {
-        _makeApiCall(start, end);
-        start = DateTime.now();
-        end = start.add(m.interval);
-      });
+      duration = (measure as HealthMeasure).duration;
     }
   }
 }

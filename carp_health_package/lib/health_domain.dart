@@ -4,10 +4,9 @@ part of health_lib;
 @JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class HealthMeasure extends Measure {
   List<HealthDataType> healthDataTypes;
-  Duration interval;
-  DateTime startTime;
+  Duration duration;
 
-  HealthMeasure(MeasureType type, this.healthDataTypes, this.interval, this.startTime) : super(type);
+  HealthMeasure(MeasureType type, this.healthDataTypes, this.duration) : super(type);
 
   static Function get fromJsonFunction => _$HealthMeasureFromJson;
 
